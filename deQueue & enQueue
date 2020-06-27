@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+template <class T> 
+class Queue{
+	public:
+		struct Node{
+			T value;
+			Node *next;
+		};
+		private:
+		int size = 0 ;
+		Node* head = NULL;
+		
+	public:
+		bool isEmpty(){
+			return (!head);
+		} //O(1)
+		void enQueue(T val) {
+			Node* newNode = new Node;
+			(newNode->value) = val;
+			newNode->next = NULL;
+			if (head == NULL) {
+				newNode->next = NULL;
+				head = newNode;
+			}
+			else {
+				Node* temp = head;
+				while (temp->next != NULL)
+				{
+					temp = temp->next;
+				}
+				temp->next = newNode;
+				newNode->next = NULL;
+			}
+			size++;
+		}
+		void deQueue(){ //to remove the last element
+			Node* temp = head;
+			if (head == NULL) //if the stack is empty??
+				{cout<< "Stack Over Flow"; throw "Stack Over Flow";}
+			head = temp->next;
+			T data = temp->value;
+			delete temp;
+			size--;
+		}
+		void display(){
+			Node* temp = head;
+			while (temp != NULL) {
+			cout << (temp->value) << " ";
+			temp = temp->next;
+			}
+		}	
+		int getSize(){
+		    return size;
+		}
+};
+
+int main() {
+	string str;	
+	Queue<int>* Queue_Odd = new Queue<int>();
+	Queue<int>* Queue_Even = new Queue<int>();
+	
+    //to cheack the minimum or maximum words in the paragraph or statment
+    do{
+    cout << "Please, Enter The statment or any paragraph between 40 : 50 Words ";
+    getline(cin,str);}
+    while(str.length()>50 || str.length()<40);
+    
+    char A1[str.length()];
+	int A2[str.length()];
+	for (int i = 0; i < str.length(); i++) {
+		//to implementation two array
+		A1[i] = str[i];
+		A2[i] = int(str[i]);
+		//to implementation Queue_Odd in second array 
+		if(Queue_Odd->getSize() <5 && A2[i] % 2 != 0 ) Queue_Odd->enQueue(A2[i]);
+		//to implementation Queue_Even in second array 
+		if(Queue_Even->getSize() <5 && A2[i] % 2 == 0 ) Queue_Even->enQueue(A2[i]);
+	}
+	
+	//display two queue After 5 insertions 
+	cout<<"After insertions"<<endl<<"Queue_Even:";
+	Queue_Even->display();
+	cout<<endl<<"Queue_Odd:";
+	Queue_Odd->display();
+
+	//display two queue After 3 deletions 
+    for(int i = 0 ; i < 3 ; i++)
+        {
+            Queue_Odd->deQueue();
+            Queue_Even->deQueue();
+            cout<<endl<<endl<<endl;
+            cout<<"After delete "<<i+1<<": "; 
+            cout<<endl<<"Queue_Even:";
+            Queue_Even->display();
+            cout<<endl<<"Queue_Odd:";
+            Queue_Odd->display();
+        }
+	return 0;
+}
